@@ -16,11 +16,7 @@ func_appreq
 echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the Application Dependencies <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
 npm install &>>${log}
 
-echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the Mongodb client <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
-yum install mongodb-org-shell -y &>>${log}
-
-echo -e "\e[33m>>>>>>>>>>>>>>>> Loading the mongodb schema <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
-mongo --host mongodb.soujandevops.online </app/schema/${component}.js &>>${log}
+func_schema
 
 func_system
 
@@ -42,13 +38,9 @@ mvn clean package &>>${log}
 echo -e "\e[33m>>>>>>>>>>>>>>>> Moving the application files <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
 mv target/${component}-1.0.jar ${component}.jar &>>${log}
 
-echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the Mysql client <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
-yum install mysql -y &>>${log}
+func_schema
 
-echo -e "\e[33m>>>>>>>>>>>>>>>> Loading the mysql schema <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
-mysql -h mysql.soujandevops.online -uroot -pRoboShop@1 < /app/schema/${component}.sql &>>${log}
-
- func_system
+func_system
 
 }
 
@@ -98,6 +90,29 @@ pip3.6 install -r requirements.txt &>>${log}
 
 func_system
 
+}
+
+func_schema() {
+
+  if [ "${schema_type}" == "mongodb"]
+  then
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the Mongodb client <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  yum install mongodb-org-shell -y &>>${log}
+
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Loading the mongodb schema <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  mongo --host mongodb.soujandevops.online </app/schema/${component}.js &>>${log}
+
+  fi
+
+  if[ "${schema_type}" == "mysql"]
+  then
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the Mysql client <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  yum install mysql -y &>>${log}
+
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Loading the mysql schema <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  mysql -h mysql.soujandevops.online -uroot -pRoboShop@1 < /app/schema/${component}.sql &>>${log}
+
+  fi
 }
 
 
