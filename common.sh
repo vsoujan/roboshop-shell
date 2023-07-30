@@ -37,7 +37,7 @@ echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the Mongodb client <<<<<<<<<<<<<<<\e[
 yum install mongodb-org-shell -y &>>${log}
 
 echo -e "\e[33m>>>>>>>>>>>>>>>> Loading the mongodb schema <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
-mongo --host mongodb.soujandevops.online </app/schema/catalogue.js &>>${log}
+mongo --host mongodb.soujandevops.online </app/schema/${component}.js &>>${log}
 
 echo -e "\e[33m>>>>>>>>>>>>>>>> Daemon service loading <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
 systemctl daemon-reload &>>${log}
