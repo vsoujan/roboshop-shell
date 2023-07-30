@@ -94,7 +94,7 @@ func_system
 
 func_schema() {
 
-  if [ "${schema_type}" == "mongodb"]
+  if [ "${schema_type}" == "mongodb" ]
   then
   echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the Mongodb client <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
   yum install mongodb-org-shell -y &>>${log}
@@ -104,7 +104,7 @@ func_schema() {
 
   fi
 
-  if[ "${schema_type}" == "mysql"]
+  if [ "${schema_type}" == "mysql" ]
   then
   echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the Mysql client <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
   yum install mysql -y &>>${log}
