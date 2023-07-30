@@ -1,5 +1,36 @@
 log=/tmp/${component}.log
 
+func_appreq() {
+
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Creating a roboshop user <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  useradd roboshop &>>${log}
+
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Deleting content in app folder <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  rm -rf /app &>>${log}
+
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Creating a Application folder <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  mkdir /app &>>${log}
+
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Downloading a Application code <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  curl -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip &>>${log}
+
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Unzipping the Application code <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  cd /app
+  unzip /tmp/${component}.zip &>>${log}
+}
+
+func_system() {
+
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Daemon service loading <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  systemctl daemon-reload &>>${log}
+
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Catalogue service enabled <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  systemctl enable ${component} &>>${log}
+
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Catalogue service restart <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  systemctl restart ${component} &>>${log}
+}
+
 func_nodejs() {
 
 echo -e "\e[33m>>>>>>>>>>>>>>>> Creating a ${component} service <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
