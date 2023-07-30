@@ -2,9 +2,6 @@ log=/tmp/${component}.log
 
 func_nodejs() {
 
-echo -e "\e[33m>>>>>>>>>>>>>>>> Creating a ${component} service <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
-cp ${component}.service /etc/systemd/system/${component}.service &>>${log}
-
 echo -e "\e[33m>>>>>>>>>>>>>>>> Creating a Mongodb repo <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
 cp mongodb.repo /etc/yum.repos.d/mongodb.repo &>>${log}
 
@@ -32,9 +29,6 @@ func_system
 func_java() {
 
 echo -e "\e[33m>>>>>>>>>>>>>>>> Creating a ${component} service <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
-cp ${component}.service /etc/systemd/system/${component}.service &>>${log}
-
-echo -e "\e[33m>>>>>>>>>>>>>>>> Creating a ${component} service <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
 cp mysql.repo  /etc/yum.repos.d/mysql.repo &>>${log}
 
 echo -e "\e[33m>>>>>>>>>>>>>>>> Installing a maven <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
@@ -59,6 +53,9 @@ mysql -h mysql.soujandevops.online -uroot -pRoboShop@1 < /app/schema/${component
 }
 
 func_appreq() {
+
+  echo -e "\e[33m>>>>>>>>>>>>>>>> Creating a ${component} service <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  cp ${component}.service /etc/systemd/system/${component}.service &>>${log}
 
   echo -e "\e[33m>>>>>>>>>>>>>>>> Creating a roboshop user <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
   useradd roboshop &>>${log}
@@ -85,7 +82,22 @@ func_system() {
   echo -e "\e[33m>>>>>>>>>>>>>>>> Catalogue service enabled <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
   systemctl enable ${component} &>>${log}
 
-  echo -e "\e[33m>>>>>>>>>>>>>>>> Catalogue service restart <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  echo -e "\e[33m\e[0m" | tee -a ${log}
   systemctl restart ${component} &>>${log}
 }
+
+func_python() {
+
+echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the python <<<<<<<<<<<<<<<\e[0m"  | tee -a ${log}
+yum install python36 gcc python3-devel -y &>>${log}
+
+func_appreq
+
+echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the python dependencies <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+pip3.6 install -r requirements.txt &>>${log}
+
+func_system
+
+}
+
 
