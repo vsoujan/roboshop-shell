@@ -88,7 +88,7 @@ func_system() {
 
   echo -e "\e[33m>>>>>>>>>>>>>>>> Catalogue service enabled <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
   systemctl enable ${component} &>>${log}
-  func_status_check
+
 
   echo -e "\e[33m\e[0m" | tee -a ${log}
   systemctl restart ${component} &>>${log}
@@ -143,7 +143,7 @@ func_status_check() {
   if [ $? -eq 0 ]; then
     echo -e "\e[32mSUCCESS\e[0m"
     else
-    echo -e "\e[32mFAILURE\e[0m"
+    echo -e "\e[31mFAILURE\e[0m"
 
   fi
 }
