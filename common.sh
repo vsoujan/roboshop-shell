@@ -59,7 +59,11 @@ func_appreq() {
   func_status_check
 
   echo -e "\e[33m>>>>>>>>>>>>>>>> Creating a roboshop user <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  id roboshop &>>${log}
+  if [ $? -ne 0 ]; then
   useradd roboshop &>>${log}
+  fi
+
   func_status_check
 
   echo -e "\e[33m>>>>>>>>>>>>>>>> Deleting content in app folder <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
@@ -86,11 +90,11 @@ func_system() {
   systemctl daemon-reload &>>${log}
   func_status_check
 
-  echo -e "\e[33m>>>>>>>>>>>>>>>> Catalogue service enabled <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+  echo -e "\e[33m>>>>>>>>>>>>>>>> ${component} service enabled <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
   systemctl enable ${component} &>>${log}
+  func_status_check
 
-
-  echo -e "\e[33m\e[0m" | tee -a ${log}
+  echo -e "\e[33m>>>>>>>>>>>>>>>> ${component} service restart <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
   systemctl restart ${component} &>>${log}
   func_status_check
 }
