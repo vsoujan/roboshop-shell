@@ -52,6 +52,39 @@ func_system
 
 }
 
+func_python() {
+
+echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the python <<<<<<<<<<<<<<<\e[0m"  | tee -a ${log}
+yum install python36 gcc python3-devel -y &>>${log}
+func_status_check
+
+func_appreq
+
+echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the python dependencies <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+pip3.6 install -r requirements.txt &>>${log}
+func_status_check
+
+func_system
+
+}
+
+func_golang() {
+
+echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the Golang <<<<<<<<<<<<<<<\e[0m"  | tee -a ${log}
+yum install golang -y &>>${log}
+func_status_check
+
+func_appreq
+
+echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the Golang dependencies <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
+go mod init ${component} &>>${log}
+go get &>>${log}
+go build &>>${log}
+func_status_check
+
+func_system
+}
+
 func_appreq() {
 
   echo -e "\e[33m>>>>>>>>>>>>>>>> Creating a ${component} service <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
@@ -99,21 +132,6 @@ func_system() {
   func_status_check
 }
 
-func_python() {
-
-echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the python <<<<<<<<<<<<<<<\e[0m"  | tee -a ${log}
-yum install python36 gcc python3-devel -y &>>${log}
-func_status_check
-
-func_appreq
-
-echo -e "\e[33m>>>>>>>>>>>>>>>> Installing the python dependencies <<<<<<<<<<<<<<<\e[0m" | tee -a ${log}
-pip3.6 install -r requirements.txt &>>${log}
-func_status_check
-
-func_system
-
-}
 
 func_schema() {
 
